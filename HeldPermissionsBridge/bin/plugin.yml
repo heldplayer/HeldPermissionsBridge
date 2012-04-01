@@ -1,0 +1,5 @@
+name: PermissionsBukkit
+main: com.platymuus.bukkit.permissions.PermissionsPlugin
+version: 1.6
+author: heldplayer
+description: Compatibility layer between PermissionsBukkit and HeldPermissions
