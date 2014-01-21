@@ -1,3 +1,4 @@
+
 package com.platymuus.bukkit.permissions;
 
 import java.util.ArrayList;
@@ -10,53 +11,56 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PermissionsPlugin extends JavaPlugin {
-	public Permissions permsPlugin;
+    public Permissions permsPlugin;
 
-	public void onEnable() {
-		Plugin perms = getServer().getPluginManager().getPlugin("HeldPermissions");
-		
-		if (perms != null) {
-			permsPlugin = (Permissions) perms;
-		} else {
-			getServer().getPluginManager().disablePlugin(this);
-		}
+    @Override
+    public void onEnable() {
+        Plugin perms = this.getServer().getPluginManager().getPlugin("HeldPermissions");
 
-		getLogger().info("[Spoof] Enabled!");
-	}
+        if (perms != null) {
+            this.permsPlugin = (Permissions) perms;
+        }
+        else {
+            this.getServer().getPluginManager().disablePlugin(this);
+        }
 
-	public void onDisable() {
-		getLogger().info("[Spoof] Disabled!");
-	}
+        this.getLogger().info("[Spoof] Enabled!");
+    }
 
-	public Group getGroup(String groupName) {
-		return new Group(this, groupName);
-	}
+    @Override
+    public void onDisable() {
+        this.getLogger().info("[Spoof] Disabled!");
+    }
 
-	public List<Group> getGroups(String playerName) {
-		ArrayList<Group> result = new ArrayList<Group>();
-		
-		List<String> groups = permsPlugin.getGroups(playerName, true);
-		
-		for(String group : groups){
-			result.add(new Group(this, group));
-		}
+    public Group getGroup(String groupName) {
+        return new Group(this, groupName);
+    }
 
-		return result;
-	}
+    public List<Group> getGroups(String playerName) {
+        ArrayList<Group> result = new ArrayList<Group>();
 
-	public PermissionInfo getPlayerInfo(String playerName) {
-		return new PermissionInfo(this, playerName, false);
-	}
+        List<String> groups = this.permsPlugin.getGroups(playerName, true);
 
-	public List<Group> getAllGroups() {
-		ArrayList<Group> result = new ArrayList<Group>();
-		
-		for(Iterator<String> groups = permsPlugin.getAllGroups().iterator(); !groups.hasNext(); ){
-			String group = groups.next();
-			
-			result.add(new Group(this, group));
-		}
+        for (String group : groups) {
+            result.add(new Group(this, group));
+        }
 
-		return result;
-	}
+        return result;
+    }
+
+    public PermissionInfo getPlayerInfo(String playerName) {
+        return new PermissionInfo(this, playerName, false);
+    }
+
+    public List<Group> getAllGroups() {
+        ArrayList<Group> result = new ArrayList<Group>();
+
+        for (Iterator<String> groups = this.permsPlugin.getAllGroups().iterator(); !groups.hasNext();) {
+            String group = groups.next();
+
+            result.add(new Group(this, group));
+        }
+
+        return result;
+    }
 }
