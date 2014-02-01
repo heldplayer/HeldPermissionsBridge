@@ -21,7 +21,7 @@ public class Group {
     }
 
     public List<String> getPlayers() {
-        return this.main.permsPlugin.getPlayersInGroup(this.name);
+        return this.main.permsPlugin.getManager().getPlayersInGroup(this.name);
     }
 
     public List<Player> getOnlinePlayers() {

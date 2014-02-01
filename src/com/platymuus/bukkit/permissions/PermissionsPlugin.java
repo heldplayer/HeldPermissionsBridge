@@ -39,7 +39,7 @@ public class PermissionsPlugin extends JavaPlugin {
     public List<Group> getGroups(String playerName) {
         ArrayList<Group> result = new ArrayList<Group>();
 
-        List<String> groups = this.permsPlugin.getGroups(playerName, true);
+        List<String> groups = this.permsPlugin.getManager().getPlayer(playerName).getGroupNames();
 
         for (String group : groups) {
             result.add(new Group(this, group));
@@ -55,7 +55,7 @@ public class PermissionsPlugin extends JavaPlugin {
     public List<Group> getAllGroups() {
         ArrayList<Group> result = new ArrayList<Group>();
 
-        for (Iterator<String> groups = this.permsPlugin.getAllGroups().iterator(); !groups.hasNext();) {
+        for (Iterator<String> groups = this.permsPlugin.getManager().getAllGroupNames().iterator(); !groups.hasNext();) {
             String group = groups.next();
 
             result.add(new Group(this, group));

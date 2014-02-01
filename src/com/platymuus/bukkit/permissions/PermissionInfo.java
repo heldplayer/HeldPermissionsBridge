@@ -2,10 +2,11 @@
 package com.platymuus.bukkit.permissions;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class PermissionInfo {
     private PermissionsPlugin main;
@@ -22,7 +23,7 @@ public class PermissionInfo {
         ArrayList<Group> result = new ArrayList<Group>();
 
         if (!this.isGroup) {
-            for (String key : this.main.permsPlugin.getGroups(this.path, true)) {
+            for (String key : this.main.permsPlugin.getManager().getPlayer(this.path).getGroupNames()) {
                 Group group = this.main.getGroup(key);
                 if (group != null) {
                     result.add(group);
@@ -34,26 +35,33 @@ public class PermissionInfo {
     }
 
     public Map<String, Boolean> getPermissions() {
-        return this.main.permsPlugin.getPermissions((this.isGroup ? "groups." : "users.") + this.path);
+        HashMap<String, Boolean> result = new HashMap<String, Boolean>();
+        if (this.isGroup) {
+            this.main.permsPlugin.getManager().getGroup(this.path).buildPermissions(result, null);
+        }
+        else {
+            this.main.permsPlugin.getManager().getPlayer(this.path).buildPermissions(result, null);
+        }
+        return result;
     }
 
     public Set<String> getWorlds() {
-        List<String> worlds = this.main.permsPlugin.getAllWorlds((this.isGroup ? "groups." : "users.") + this.path);
-
-        return new HashSet<String>(worlds);
-        //HashMap<String, HashMap<String, Boolean>> worldPerms = main.permsPlugin.getWorldPermissions((isGroup ? "groups." : "users.") + path);
-
-        //return worldPerms.keySet();
+        if (this.isGroup) {
+            return new TreeSet<String>(this.main.permsPlugin.getManager().getGroup(this.path).getWorldNames());
+        }
+        else {
+            return new TreeSet<String>(this.main.permsPlugin.getManager().getGroup(this.path).getWorldNames());
+        }
     }
 
-    /*
-     * public List<String> getWorlds() {
-     * return main.permsPlugin.getAllWorlds((isGroup ? "groups." : "users.") +
-     * path);
-     * }
-     */
-
     public Map<String, Boolean> getWorldPermissions(String world) {
-        return this.main.permsPlugin.getWorldPermissions(this.path, world);
+        HashMap<String, Boolean> result = new HashMap<String, Boolean>();
+        if (this.isGroup) {
+            this.main.permsPlugin.getManager().getGroup(this.path).buildPermissions(result, world);
+        }
+        else {
+            this.main.permsPlugin.getManager().getPlayer(this.path).buildPermissions(result, world);
+        }
+        return result;
     }
 }
