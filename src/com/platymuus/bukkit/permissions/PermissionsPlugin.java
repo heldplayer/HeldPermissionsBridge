@@ -2,6 +2,7 @@
 package com.platymuus.bukkit.permissions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class PermissionsPlugin extends JavaPlugin {
     public List<Group> getGroups(String playerName) {
         ArrayList<Group> result = new ArrayList<Group>();
 
-        List<String> groups = this.permsPlugin.getManager().getPlayer(playerName).getGroupNames();
+        Collection<String> groups = this.permsPlugin.getManager().getPlayer(playerName).getGroupNames();
 
         for (String group : groups) {
             result.add(new Group(this, group));
